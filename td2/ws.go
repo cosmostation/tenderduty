@@ -110,7 +110,7 @@ func (cc *ChainConfig) WsRun() {
 			select {
 			case update := <-resultChan:
 				if update.Final && update.Height%20 == 0 {
-					l(fmt.Sprintf("🧊 %-12s block %d", cc.ChainId, update.Height))
+					// l(fmt.Sprintf("🧊 %-12s block %d", cc.ChainId, update.Height))
 				}
 				if update.Status > signState && cc.valInfo.Bonded {
 					signState = update.Status
@@ -125,7 +125,8 @@ func (cc *ChainConfig) WsRun() {
 					info := getAlarms(cc.name)
 					cc.blocksResults = append([]int{int(signState)}, cc.blocksResults[:len(cc.blocksResults)-1]...)
 					if signState < 3 && cc.valInfo.Bonded {
-						warn := fmt.Sprintf("❌ warning      %s missed block %d on %s", cc.valInfo.Moniker, update.Height, cc.ChainId)
+						// warn := fmt.Sprintf("❌ warning      %s missed block %d on %s", cc.valInfo.Moniker, update.Height, cc.ChainId)
+						warn := fmt.Sprintf("❌ warning      %s missed block %d on %s, signState %d", cc.valInfo.Moniker, update.Height, cc.ChainId, signState)
 						info += warn + "\n"
 						cc.lastError = time.Now().UTC().String() + " " + info
 						l(warn)

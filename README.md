@@ -43,14 +43,13 @@ docker run -d --name tenderduty -p "8888:8888" -p "28686:28686" --restart unless
 docker logs -f --tail 20 tenderduty
 ```
 
-
 ## Split Configuration
 
 For validators with many chains, chain specific configuration may be split into additional files and placed into the directory "chains.d".
 
 This directory can be changed with the -cc option
 
-The user friendly chain label will be taken from the name of the file.  
+The user friendly chain label will be taken from the name of the file.
 
 For example:
 
@@ -68,7 +67,37 @@ chain_id: demo-1
     valoper_address: demovaloper...
 ```
 
+## Namada
+
+When configuring Namada, there are two primary fields that need to be defined:
+
+1. **valoper_address**: This is the valcons address derived from the tendermint address. It is used to identify the
+   validator on the Tendermint network.
+
+   You can get a tendermint address by running the following command:
+
+   ```bash
+   curl -s localhost:26657/status | jq .result.validator_info.address
+   ```
+
+   To derive a valcons address run:
+
+   ```bash
+   gaiad keys parse <YOUR_TENDERMINT_ADDRESS>
+   ```
+
+   > Download gaiad [here](https://github.com/cosmos/gaia/releases)
+
+2. **namada_established_address**: This field represents the validator's established address, which is specific to the
+   Namada network.
+
+```yaml
+valoper_address: cosmosvalcons1...
+namada_established_address: tnam...
+```
+
+Make sure to populate these fields correctly in your configuration file to ensure proper monitoring and alerting.
+
 ## Contributions
 
 Contributions are welcome, please open pull requests against the 'develop' branch, not main.
-
